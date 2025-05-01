@@ -1,0 +1,36 @@
+Upstream-Status: Pending
+https://lists.denx.de/pipermail/u-boot/2024-September/565516.html
+
+diff --git a/board/raspberrypi/rpi/rpi.c b/board/raspberrypi/rpi/rpi.c
+index b19f3e6..4e1d40f 100644
+--- a/board/raspberrypi/rpi/rpi.c
++++ b/board/raspberrypi/rpi/rpi.c
+@@ -558,7 +558,7 @@ int ft_board_setup(void *blob, struct bd_info *bd)
+ 	node = fdt_node_offset_by_compatible(blob, -1, "simple-framebuffer");
+ 	if (node < 0)
+ 		fdt_simplefb_add_node(blob);
+-	else
++	else if (IS_ENABLED(CONFIG_VIDEO))
+ 		fdt_simplefb_enable_and_mem_rsv(blob);
+ 
+ #ifdef CONFIG_EFI_LOADER
+diff --git a/boot/fdt_simplefb.c b/boot/fdt_simplefb.c
+index 069ced7..0f2c560 100644
+--- a/boot/fdt_simplefb.c
++++ b/boot/fdt_simplefb.c
+@@ -71,6 +71,7 @@ int fdt_simplefb_add_node(void *blob)
+ 	return fdt_simplefb_configure_node(blob, off);
+ }
+ 
++#if IS_ENABLED(CONFIG_VIDEO)
+ /**
+  * fdt_simplefb_enable_existing_node() - enable simple-framebuffer DT node
+  *
+@@ -88,7 +89,6 @@ static int fdt_simplefb_enable_existing_node(void *blob)
+ 	return fdt_simplefb_configure_node(blob, off);
+ }
+ 
+-#if IS_ENABLED(CONFIG_VIDEO)
+ int fdt_simplefb_enable_and_mem_rsv(void *blob)
+ {
+ 	struct fdt_memory mem;
