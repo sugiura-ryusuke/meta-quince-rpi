@@ -17,7 +17,7 @@
 #     https://github.com/agherzan/meta-raspberrypi/blob/master/docs/extra-build-config.md
 
 # Have u-boot load kernel image,
-RPI_USE_U_BOOT = "${@bb.utils.contains('IMAGE_BASENAME', 'quince-image-tiny', '0', '1', d)}"
+RPI_USE_U_BOOT = "1"
 
 # Kernel image type
 KERNEL_IMAGETYPE = "Image"
